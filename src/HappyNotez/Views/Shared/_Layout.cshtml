@@ -1,0 +1,185 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:og="http://ogp.me/ns#">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=600, initial-scale=1.0" />
+	<meta name="og:title" content="Found this happy note!" />
+	<meta name="og:site" content="HappyNotez.org" />
+	<meta name="og:type" content="note" />
+	<link rel="alternate" type="application/atom+xml" href="/notez/feed" title="Recently found notes" />
+	@RenderSection("header", required: false)
+
+	<title>HappyNotez.org</title>
+	<style>
+		body { padding-top: 80px; margin: 0px; }
+		body, table { font-family: Helvetica, Arial, sans-serif; }
+		a { color: white; text-decoration: none; }
+		td { padding: 0px; }
+		table#navbar { position: absolute; width: 100%; font-size: 24pt; font-weight: bold; color: white; table-layout: fixed; border-collapse: collapse; top: 0px; }
+		table#navbar td { padding: 20px; text-align: center; cursor: pointer; }
+		td#left { background-color: #02a5a5; }
+		td#found { background-color: #cc146b; }
+		td#explore { background-color: #fd9903; }
+
+		#about { position: absolute; bottom: 0px; left: 0px; padding-left: 1em; padding-bottom: 0.5em; padding-right: 1em; padding-top: 0.5em; background-color: black;font-size: 24pt; font-weight: bold; color: white; cursor: pointer  }
+
+		div.page { position: absolute; top: 160px; left: 10%; right: 10%; color: white; border: 20px solid transparent; }
+		div.page table { table-layout: fixed; width: 100%; border-collapse: collapse }
+		div.page td { position: relative; }
+		input[type=file] { position: absolute; top: 0; right: 0; min-width: 100%; min-height: 100%; font-size: 100px; text-align: right; filter: alpha(opacity=0); opacity: 0; outline: none; cursor: inherit; display: block; }
+
+		div.page .uploadButton { color: white; font-size: 32pt; text-align: center; overflow: hidden; cursor: pointer; }
+		div.page .uploadPreview { width: 100%; min-height: 100px; }
+		div.page .uploadLabel { padding-top: 2em; padding-bottom: 2em;  }
+		div.page .uploadQuery { position: absolute; top: 0px; left: 0px; right: 0px; }
+		div.page .uploadQuery input { font-size: 16pt; }
+		div.page .uploadQuery input[type=button] { color: white; padding-top: 0.25em; padding-bottom: 0.25em; min-width: 100px; }
+		div.page .uploadSubmit { position: absolute; bottom: 0px; left: 0px; right: 0px; font-size: medium; }
+		div.page .uploadSubmit input { float: right; color: white; border-radius: 0px; border: none; font-size: 16pt; min-width: 100px; padding-top: 0.25em; padding-bottom: 0.25em; }
+		div.page .uploadMap { position: absolute !important; top: 2em; left: 0px; right: 0px; bottom: 2em; }
+
+		div.leftHalf { width: 50%; float: left; position: relative; padding-right: 20px; box-sizing: border-box; }
+		div.rightHalf { width: 50%; position: absolute; right: 0px; height: 100%; font-size: 16pt; }
+
+		div#leftPage { background-color: rgba(2,165,165,0.75); }
+		div#leftPage .uploadLabel { background-color: #02a5a5;}
+		div#leftPage input[type=submit], div#leftPage input[type=button] { background-color: rgba(2,165,165,0.75); background-color: #02a5a5; border: none; }
+
+		div#foundPage { background-color: rgba(204,20,107,0.75); }
+		div#foundPage .uploadLabel { background-color: #cc146b;}
+		div#foundPage input[type=submit], div#foundPage input[type=button] { background-color: rgba(204,20,107,0.75); background-color: #cc146b; border: none; }
+
+		div#aboutPage, div#explorePage { border: solid 2px silver; background: white; color: black; padding: 1em; overflow-y: auto; bottom: 10%; }
+		div#aboutPage div.aboutStep3 { text-align: center; width: 33%; float: left; }
+
+		img.notemark { width: 300px; height: 300px; cursor: pointer }
+		div.notedate { padding-bottom: 5px; }
+		div.ni { float: left; padding: 10px; border: solid 1px silver; margin: 10px }
+		div.ni img { width: 200px; height: 200px; cursor: pointer }
+
+		div.shbar { font-size: small; font-family: Roboto,Arial,sans-serif; padding-top: 5px }
+		div.shbar a { color: black; }
+		div.shbar img.r { width: 16px; height: 16px; vertical-align: middle; cursor: pointer; }
+		.r { float: right; }
+
+		div#notePage { background-color: rgba(0,0,0,0.75); position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; padding: 1em }
+		div#notePage table { table-layout: fixed; width: 100%; height: 100% }
+		div#notePage td { position: relative; }
+		div#notePage #noteImage { max-width: 80%; max-height: 80%; }
+
+		span.aboutF { font-weight: bold; background-color: #cc146b; color: white; cursor: pointer; padding-left: 1em; padding-right: 1em }
+	</style>
+	<script src="//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.4"></script>
+	<script src="//platform.twitter.com/widgets.js"></script>
+	<script src="~/js/oms.js"></script>
+	<script src="~/js/picker.js"></script>
+	<script src="~/js/maps.js"></script>
+</head>
+<body>
+	<div id="map" style="top: 0px; width: 100%; height: 100%; position: absolute"></div>
+
+	<table id="navbar">
+		<tr>
+			<td id="left" onclick="switchToPage('aboutPage')">WHAT?</td>
+			<td id="found" onclick="navFound()">FOUND</td>
+			<td id="explore" onclick="navExplore()">EXPLORE</td>
+		</tr>
+	</table>
+
+	<div id="fb-root"></div>
+
+	@RenderBody()
+
+	<form method="post" enctype="multipart/form-data">
+		<div id="foundPage" class="page" style="display: none">
+			<div class="leftHalf uploadButton">
+				<img id="foundPreview" class="uploadPreview" style="display: none" onerror="resetPreview('foundPreview', 'foundUpload')" />
+				<div id="foundUpload" class="uploadLabel">UPLOAD A PHOTO</div>
+				<input type="file" name="photo" onchange="preview(this, 'foundPreview', 'foundUpload', foundMap)" />
+			</div>
+			<div class="rightHalf">
+				<div id="foundMap" class="uploadMap">Google Maps</div>
+				<table class="uploadQuery">
+					<tr>
+						<td>
+							<input type="text" id="foundQuery" name="query" placeholder="Where did you find this note?" onkeypress="return clickOnEnter(event, 'foundSearch')" style="width: 100%" />
+						</td>
+						<td style="width: 110px; text-align: right">
+							<input type="button" id="foundSearch" value="Search" style="min-width: 100px;" />
+						</td>
+					</tr>
+				</table>
+				<div class="uploadSubmit">
+					Drag &amp; drop the marker or double-click to set the location.
+					<input type="submit" value="Submit" onclick="this.value='Uploading...'" />
+				</div>
+
+				<input type="hidden" id="foundLat" name="latitude" value="54.978252" />
+				<input type="hidden" id="foundLong" name="longitude" value="-1.61778" />
+				<input type="hidden" id="foundEl" name="elevation" value="0" />
+				<input type="hidden" id="foundZoom" name="zoom" value="8" />
+				<input type="hidden" name="found" value="True" />
+			</div>
+		</div>
+	</form>
+
+	<div id="aboutPage" class="page" style="display: none">
+		<h1>HappyNotez.org</h1>
+		<h2>What are HappyNotez?</h2>
+		<p>HappyNotez are little positive messages that are left in public places to be discovered by a passer-by. They are part of a project that was started by three students who wanted to make the world a little bit of a happier place with little acts of kindness to make strangers smile. All you have to do is leave a little note with the HappyNotez.org URL on it in a place where someone else will find it.</p>
+		<p>If you leave or find a note, you can upload a picture of the note as well as its location to this website. This will leave a trail of happiness resulting not only in putting a smile on the face of the person who finds the note, but also by having an archive of positive notes for those times when you need a moral boost!</p>
+		
+		<h2>Have you found a note?</h2>
+		<p>Exciting!</p>
+		<ol>
+			<li>Take a picture of the note.</li>
+			<li>Go to HappyNotez.org and click <span class="aboutF" onclick="navFound()">FOUND</span>.</li>
+			<li>Tell us where you found it and upload the picture.</li>
+			<li>Share with others!</li>
+		</ol>
+
+		<h2>How to leave a note?</h2>
+		<div class="aboutStep3">
+			<img src="~/img/1.png" alt="All you need is love!" /><br /><br />
+			1. Write or draw a lovely HappyNote. On paper, or whatever you fancy.
+		</div>
+		<div class="aboutStep3">
+			<img src="~/img/2.png" alt="All you need is love! ♡ HappyNotez.org"/><br/><br />
+			2. Maker sure ‘HappyNotez.org’ is on the note.
+		</div>
+		<div class="aboutStep3">
+			<img src="~/img/3.png" alt="For example in a book..." /><br/><br />
+			3. Leave the note in a place where you think someone will come accross it <span title="like, accidentally">serendipitously</span>.
+		</div>
+		<div style="clear:both">&nbsp;</div>
+		
+		<h2>Explore the map!</h2>
+		<ol>
+			<li>You can explore the notes that others have found so far either based on location or as a picture gallery.</li>
+			<li>Did you find a note that you want to share with others? Tweet it or share it on Facebook!</li>
+		</ol>		
+		<h2>Why are we doing this?</h2>
+		<p>We just want to put smiles on peoples’ faces! Have you ever come across a little note in a library, bookshop, bathroom stall that made you smile? Now you can take the note and keep it as a private keepsake, but also have the chance to spread this love over the internet.</p>
+		<p>This is supposed to be a happy project that runs on trusting the community of HappySharers. If you see anything that you don’t think is appropriate, or a picture that does not contain a HappyNote, please flag it.</p>
+		<p>&nbsp;</p>
+		<p style="text-align: center"><img src="~/img/dc.png" alt="Digital Civics" /></p>
+	</div>
+
+	<div id="explorePage" class="page" style="display: none">
+	   This page requires javascript.
+	</div>
+
+	<div id="notePage" style="display: none">
+		<table onclick="switchToPage('notePage')">
+			<tr>
+				<td style="vertical-align: middle; text-align: center">
+					<img id="noteImage" src="~/img/smile.gif" />
+				</td>
+			</tr>
+		</table>
+	</div>
+
+	<script src="https://maps.googleapis.com/maps/api/js?callback=initMap"></script>
+	@RenderSection("scripts", required: false)
+</body>
+</html>

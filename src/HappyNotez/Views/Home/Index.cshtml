@@ -1,0 +1,26 @@
+﻿@if (Model == null)
+{
+	<script>var urlOpenID = 0;</script>
+}
+else
+{
+	<script>var urlOpenID = @Model.ID;</script>
+}
+
+@section Header
+{
+	<meta name="og:url" content="http://happynotez.org/@Model?.ID" />
+	@if (Model != null)
+	{
+	<meta property="og:latitude" content="@Model.Latitude" />
+	<meta property="og:longitude" content="@Model.Longitude" />
+	<meta property="og:image" content="http://happynotez.org/n/t@(Model.ID).jpg" />		
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content="Found this happy note!" />
+	<meta name="twitter:description" content="Why don't you leave a happy note for someone?" />
+	<meta name="twitter:image" content="http://happynotez.org/n/t@(Model.ID).jpg" />
+	<meta name="twitter:image:width" content="300" />
+	<meta name="twitter:image:height" content="300" />
+	<meta name="twitter:url" content="http://happynotez.org/@Model.ID" />
+	}
+}
