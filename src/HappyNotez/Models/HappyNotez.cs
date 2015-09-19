@@ -1,22 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.Data.Entity;
 
 namespace HappyNotez.Models
 {
-    public class NotezContext : DbContext
-    {
-        public DbSet<Notez> Notez { get; set; }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Notez>().Property(b => b.Timestamp).Required();
-            modelBuilder.Entity<Notez>().Property(b => b.Found).Required();
-        }
-    }
-
     public enum FlagStatus : byte
     {
         NotFlaggged = 0,
@@ -35,7 +20,6 @@ namespace HappyNotez.Models
         public int ReportCount { get; set; }
         public string HostAddress { get; set; }
         public string UserAgent { get; set; }
-        // public DbGeography Location { get; set; }
         public string LocationRaw { get; set; }
 
         public double? Longitude { get; set; }
