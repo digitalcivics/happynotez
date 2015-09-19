@@ -1,0 +1,55 @@
+﻿body { padding-top: 80px; margin: 0px; }
+body, table { font-family: Helvetica, Arial, sans-serif; }
+a { color: white; text-decoration: none; }
+td { padding: 0px; }
+table#navbar { position: absolute; width: 100%; font-size: 24pt; font-weight: bold; color: white; table-layout: fixed; border-collapse: collapse; top: 0px; }
+table#navbar td { padding: 20px; text-align: center; cursor: pointer; }
+td#left { background-color: #02a5a5; }
+td#found { background-color: #cc146b; }
+td#explore { background-color: #fd9903; }
+
+div.page { position: absolute; top: 160px; left: 10%; right: 10%; color: white; border: 20px solid transparent; }
+div.page table { table-layout: fixed; width: 100%; border-collapse: collapse; }
+div.page td { position: relative; }
+input[type=file] { position: absolute; top: 0; right: 0; min-width: 100%; min-height: 100%; font-size: 100px; text-align: right; filter: alpha(opacity=0); opacity: 0; outline: none; cursor: inherit; display: block; }
+
+div.page .uploadButton { color: white; font-size: 32pt; text-align: center; overflow: hidden; cursor: pointer; }
+div.page .uploadPreview { width: 100%; min-height: 100px; }
+div.page .uploadLabel { padding-top: 2em; padding-bottom: 2em; }
+div.page .uploadQuery { position: absolute; top: 0px; left: 0px; right: 0px; }
+div.page .uploadQuery input { font-size: 16pt; }
+div.page .uploadQuery input[type=button] { color: white; padding-top: 0.25em; padding-bottom: 0.25em; min-width: 100px; }
+div.page .uploadSubmit { position: absolute; bottom: 0px; left: 0px; right: 0px; font-size: medium; }
+div.page .uploadSubmit input { float: right; color: white; border-radius: 0px; border: none; font-size: 16pt; min-width: 100px; padding-top: 0.25em; padding-bottom: 0.25em; }
+div.page .uploadMap { position: absolute !important; top: 2em; left: 0px; right: 0px; bottom: 2em; }
+
+div.leftHalf { width: 50%; float: left; position: relative; padding-right: 20px; box-sizing: border-box; }
+div.rightHalf { width: 50%; position: absolute; right: 0px; height: 100%; font-size: 16pt; }
+
+div#leftPage { background-color: rgba(2,165,165,0.75); }
+div#leftPage .uploadLabel { background-color: #02a5a5; }
+div#leftPage input[type=submit], div#leftPage input[type=button] { background-color: rgba(2,165,165,0.75); background-color: #02a5a5; border: none; }
+
+div#foundPage { background-color: rgba(204,20,107,0.75); }
+div#foundPage .uploadLabel { background-color: #cc146b; }
+div#foundPage input[type=submit], div#foundPage input[type=button] { background-color: rgba(204,20,107,0.75); background-color: #cc146b; border: none; }
+
+div#aboutPage, div#explorePage { border: solid 2px silver; background: white; color: black; padding: 1em; overflow-y: auto; bottom: 10%; }
+div#aboutPage div.aboutStep3 { text-align: center; width: 33%; float: left; }
+
+img.notemark { width: 300px; height: 300px; cursor: pointer; }
+div.notedate { padding-bottom: 5px; }
+div.ni { float: left; padding: 10px; border: solid 1px silver; margin: 10px; }
+div.ni img { width: 200px; height: 200px; cursor: pointer; }
+
+div.shbar { font-size: small; font-family: Roboto,Arial,sans-serif; padding-top: 5px; }
+div.shbar a { color: black; }
+div.shbar img.r { width: 16px; height: 16px; vertical-align: middle; cursor: pointer; }
+.r { float: right; }
+
+div#notePage { background-color: rgba(0,0,0,0.75); position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; padding: 1em; }
+div#notePage table { table-layout: fixed; width: 100%; height: 100%; }
+div#notePage td { position: relative; }
+div#notePage #noteImage { max-width: 80%; max-height: 80%; }
+
+span.aboutF { font-weight: bold; background-color: #cc146b; color: white; cursor: pointer; padding-left: 1em; padding-right: 1em; }
