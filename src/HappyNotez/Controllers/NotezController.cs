@@ -57,7 +57,6 @@ namespace HappyNotez.Controllers
             {
                 count = notez.Count,
                 ids = notez.Select(n => n.ID).ToArray(),
-                flags = notez.Select(n => n.FlagStatus).ToArray()
             });
         }
 
