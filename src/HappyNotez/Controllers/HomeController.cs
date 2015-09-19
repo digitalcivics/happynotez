@@ -67,10 +67,11 @@ namespace HappyNotez.Controllers
                         int startY = (scaled.PixelHeight - 300) / 2;
                         CroppedBitmap cropped = new CroppedBitmap(scaled, new Int32Rect(startX, startY, 300, 300));
 
+                        BitmapSource rotated = ApplyOrientation(cropped, img.Metadata as BitmapMetadata);
                         using (Stream t = System.IO.File.Create(Path.Combine(root, "t" + note.ID + ".jpg")))
                         {
                             JpegBitmapEncoder jpg = new JpegBitmapEncoder();
-                            jpg.Frames.Add(BitmapFrame.Create(cropped));
+                            jpg.Frames.Add(BitmapFrame.Create(rotated));
                             jpg.Save(t);
                         }
                     }
@@ -85,6 +86,43 @@ namespace HappyNotez.Controllers
             }
 
             return RedirectToAction("Index");
+        }
+
+        private static BitmapSource ApplyOrientation(BitmapSource bitmap, BitmapMetadata metadata)
+        {
+            if (metadata == null || !metadata.ContainsQuery("System.Photo.Orientation"))
+                return bitmap;
+
+            ushort orientation = (ushort)metadata.GetQuery("System.Photo.Orientation");
+
+            switch (orientation)
+            {
+                case 2: // flip horizontal
+                    return new TransformedBitmap(bitmap, new ScaleTransform(-1, 1));
+
+                case 3: // rotate 180
+                    return new TransformedBitmap(bitmap, new RotateTransform(-180));
+
+                case 4: // flip vertical
+                    return new TransformedBitmap(bitmap, new ScaleTransform(1, -1));
+
+                case 5: // transpose
+                    bitmap = new TransformedBitmap(bitmap, new ScaleTransform(1, -1));
+                    goto case 8;
+
+                case 6: // rotate 270
+                    return new TransformedBitmap(bitmap, new RotateTransform(-270));
+
+                case 7: // transverse
+                    bitmap = new TransformedBitmap(bitmap, new ScaleTransform(-1, 1));
+                    goto case 8;
+
+                case 8: // rotate 90
+                    return new TransformedBitmap(bitmap, new RotateTransform(-90));
+
+                default:
+                    return bitmap;
+            }
         }
 
         public IActionResult Error()
