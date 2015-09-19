@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>HappyNotez.org</title>
+	<script>
+		var d = document;
+		function locate(){
+			navigator.geolocation.getCurrentPosition(function(p){
+				var a = d.getElementById("a"), o = d.getElementById("o"), t = d.getElementById("t");
+				if (loc){
+					a.value = p.coords.latitude;
+					o.value = p.coords.longitude;
+					t.value = a.value + " " + o.value;
+				}
+			});
+		}
+	</script>
+</head>
+<body id="b" style="font-family: sans-serif">
+	<script>
+		if ((window.innerWidth || d.documentElement.clientWidth || d.getElementById("b").clientWidth) > 600)
+			window.location = "/home";
+	</script>
+	<img src="/img/hn.gif" alt=":]" />
+	<h1>HappyNotez.org</h1>
+	<p>HappyNotez are little positive messages that are left in public places to be discovered by a passer-by. They are part of a project that was started by three students who wanted to make the world a little bit of a happier place with little acts of kindness to make strangers smile. All you have to do is leave a little note with the HappyNotez.org URL on it in a place where someone else will find it.</p>
+
+	<h2>Have you found a note?</h2>
+	<p>Exciting! It would be great if you shared it to the archive of positive notes found around the world.</p>
+
+	<form method="post" enctype="multipart/form-data">
+		<ol>
+			<li>Take a picture of the note and attach it:<br/>
+				<input name="photo" type="file" /><br/><br/>
+			</li>
+			<li>Where did you find it? Share <span id="l"></span>address, post code or just a city:<br/>
+				<input type="hidden" id="a" name="lat" /><input type="hidden" id="o" name="lng" />
+				<input id="t" name="query" type="text" /><br/><br/>
+			</li>
+			<li><input type="submit" value="Submit!" /><br/></li>
+		</ol>
+		<script>
+			if (navigator && navigator.geolocation)
+				d.getElementById("l").innerHTML = "<a href='#' onclick='locate()'>your location</a> or type in an ";
+		</script>
+	</form>
+
+	<h2>Archive</h2>
+	<p>Interested what others have found? Check the <a href="/mobile/archive">archive</a>!</p>
+	<p>&nbsp;</p>
+	<p style="font-size: smaller">See the <a href="/home">desktop version</a> with a map instead.</p>
+</body>
+</html>

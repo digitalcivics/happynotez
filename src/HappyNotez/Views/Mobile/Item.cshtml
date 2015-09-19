@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:og="http://ogp.me/ns#">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=600, initial-scale=1.0" />
+	<meta name="og:title" content="Found this happy note!" />
+	<meta name="og:site" content="HappyNotez.org" />
+	<meta name="og:type" content="note" />
+	<meta name="og:url" content="http://happynotez.org/@Model?.ID" />
+	@if (Model != null)
+	{
+	<meta property="og:latitude" content="@Model.Latitude" />
+	<meta property="og:longitude" content="@Model.Longitude" />
+	<meta property="og:image" content="http://happynotez.org/n/t@(Model.ID).jpg" />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content="Found this happy note!" />
+	<meta name="twitter:description" content="Why don't you leave a happy note for someone?" />
+	<meta name="twitter:image" content="http://happynotez.org/n/t@(Model.ID).jpg" />
+	<meta name="twitter:image:width" content="300" />
+	<meta name="twitter:image:height" content="300" />
+	<meta name="twitter:url" content="http://happynotez.org/@Model.ID" />
+	}
+
+	<title>HappyNotez.org</title>
+</head>
+<body style="font-family: sans-serif">
+	<script>
+		if ((window.innerWidth || document.documentElement.clientWidth || document.getElementById("b").clientWidth) > 600)
+			window.location = "/home/index/@Model.ID";
+	</script>
+	<img src="/img/hn.gif" alt=":]" />
+	<h1>HappyNotez.org</h1>
+	<p>Look what note has been found:</p>
+	<a href="/n/@(Model.ID).jpg"><img src="/n/t@(Model.ID).jpg" /></a>
+	<p>The link to this note is <a href="/@Model">http://happynotez.org/@Model.ID</a>, feel free to share it!</p>
+
+	<h2>Archive</h2>
+	<p>Interested what else people found? Check the <a href="/mobile/archive">archive</a>.</p>
+	<p>&nbsp;</p>
+	<p style="font-size: smaller">See the <a href="/home/index/@Model.ID">desktop version</a> with a map instead.</p>
+</body>
+</html>

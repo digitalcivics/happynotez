@@ -14,20 +14,49 @@ using Microsoft.AspNet.Mvc;
 
 namespace HappyNotez.Controllers
 {
-    public class HomeController : Controller
+    public class MobileController : Controller
     {
+        private const int PerPage = 5;
+
         private NotezContext _context;
         private IHostingEnvironment _environment;
 
-        public HomeController(NotezContext context, IHostingEnvironment environment)
+        public MobileController(NotezContext context, IHostingEnvironment environment)
         {
             _context = context;
             _environment = environment;
         }
 
-        public IActionResult Index(long? id)
-        {            
-            return View(_context.Notez.Where(n => n.ID == id && n.FlagStatus != FlagStatus.Removed && n.FlagStatus != FlagStatus.Invalid).FirstOrDefault());
+        public IActionResult Thanks(long noteID)
+        {
+            return View(noteID);
+        }
+
+        public IActionResult Archive(int p = 0)
+        {
+            ViewBag.Page = p;
+            ViewBag.PerPage = PerPage;
+
+            Notez[] notes = _context.Notez.Where(n => n.FlagStatus != FlagStatus.Removed && n.FlagStatus != FlagStatus.Invalid).OrderByDescending(n => n.ID).Skip(p * PerPage).Take(PerPage).ToArray();
+            if (notes.Length == 0 && p != 0)
+                return RedirectToAction(nameof(Archive)); 
+
+            return View(notes);
+        }
+
+        public IActionResult Item(long noteID)
+        {
+            Notez note = _context.Notez.Where(n => n.ID == noteID && n.FlagStatus != FlagStatus.Removed && n.FlagStatus != FlagStatus.Invalid).FirstOrDefault();
+
+            if (note == null)
+                return RedirectToAction(nameof(Index));
+
+            return View(note);
+        }
+
+        public IActionResult Index()
+        {
+            return View();
         }
 
         [HttpPost]
@@ -65,15 +94,10 @@ namespace HappyNotez.Controllers
                     await _context.SaveChangesAsync();
                 }
 
-                return RedirectToAction(nameof(Index), new { noteID = note.ID });
+                return RedirectToAction("Index", new { noteID = note.ID });
             }
 
-            return RedirectToAction(nameof(Index));
-        }
-
-        public IActionResult Error()
-        {
-            return View("~/Views/Shared/Error.cshtml");
+            return RedirectToAction("Index");
         }
     }
 }

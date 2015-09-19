@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>HappyNotez.org</title>
+</head>
+<body style="font-family: Arial, Helvetica, sans-serif" id="b">
+	<script>
+		if ((window.innerWidth || document.documentElement.clientWidth || document.getElementById("b").clientWidth) > 600)
+			window.location = "/home";
+	</script>
+	<img src="/img/hn.gif" alt=":]" />
+	<h1>HappyNotez.org Archive</h1>
+
+	@if (Model.Length == 0)
+	{
+	<p>Oh wow, you found the very first happy note! Congratulations!</p>
+	}
+	else
+	{
+	<p>These are the happy notes that have been found around the world recently:</p>
+	}
+
+@foreach (HappyNotez.Models.Notez note in Model)
+{
+	<p>On @note.Timestamp.ToString("ddd MMM d yyyy", System.Globalization.CultureInfo.InvariantCulture):</p>
+	<img src="/n/t(@note.ID).jpg" /><p>&nbsp;</p>
+}
+
+	@if (Model.Length == ViewBag.PerPage)
+	{
+		<p><a href="?p=@(ViewBag.Page + 1)">more >></a></p>
+	}
+
+	<p>&nbsp;</p>
+	<p style="font-size: smaller">See the <a href="/home">desktop version</a> with a map instead.</p>
+</body>
+</html>

@@ -10,7 +10,7 @@ var userLong;
 var userZoom;
                                                                                                                                                                                                                                                                                      
 var shareHTML = "<div class='shbar'><a href='https://twitter.com/intent/tweet?text=Just%20found%20this%20%23happynote!&url=http%3A%2F%2Fhappynotez.org%2F{id}' class='twitter-share-button' data-url='http://happynotez.org/{id}' data-text='Just found this #happynote!'>Tweet</a> " +
-                "<div class='fb-share-button' data-href='http://happynotez.org/{id}' data-layout='button_count'></div> <img class='r' src='img/flag.png' onclick='report({id})' title='Not a note?' /></div>";
+                "<div class='fb-share-button' data-href='http://happynotez.org/{id}' data-layout='button_count'></div> <img class='r' src='/img/flag.png' onclick='report({id})' title='Not a note?' /></div>";
                               
 function withID(str, id)
 {
@@ -82,7 +82,7 @@ function navExplore()
                         {
                             var node = document.createElement("DIV");
                             node.className = "ni";
-                            node.innerHTML = withID("<img src='n/t{id}.jpg' onclick='showNote({id})' />" + shareHTML, noteData.ids[i]);
+                            node.innerHTML = withID("<img src='/n/t{id}.jpg' onclick='showNote({id})' />" + shareHTML, noteData.ids[i]);
                             page.appendChild(node);
                         }
                     }
@@ -150,7 +150,7 @@ function showMarker(m)
         var year = Math.floor(day / 12 / 32); day = day - year * 12 * 32;
         var month = Math.floor(day / 32); day = day - month * 32;
         var found = "<div class='notedate'>Found on " + new Date(2015 + year, month - 1, day).toDateString();
-        m.info = new google.maps.InfoWindow({ content: found + withID("</div><img class='notemark' src='n/t{id}.jpg' onclick='showNote({id})' />" + shareHTML, m.noteID) });
+        m.info = new google.maps.InfoWindow({ content: found + withID("</div><img class='notemark' src='/n/t{id}.jpg' onclick='showNote({id})' />" + shareHTML, m.noteID) });
 
         google.maps.event.addListener(m.info, 'domready', function ()
         {
@@ -206,7 +206,7 @@ function showNote(id)
     var img = document.getElementById("noteImage");
     img.src = "img/smile.gif";
     switchToPage("notePage");
-    img.src = "n/" + id + ".jpg";
+    img.src = "/n/" + id + ".jpg";
 }
 
 function hideMarkers()
