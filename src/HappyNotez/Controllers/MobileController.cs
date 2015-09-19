@@ -2,10 +2,12 @@
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Xml.Linq;
 using HappyNotez.Models;
 using Microsoft.AspNet.Hosting;
 using Microsoft.AspNet.Http;
@@ -60,22 +62,39 @@ namespace HappyNotez.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Index(IFormFile photo, string query, string latitude, string longitude, string elevation, string zoom, bool found)
+        public async Task<IActionResult> Index(IFormFile photo, string query, string lat, string lng)
         {
             if (photo != null)
             {
                 Notez note = new Notez
                 {
-                    Found = found,
+                    Found = true,
                     Timestamp = DateTimeOffset.Now,
                     UserAgent = Request.Headers["User-Agent"],
                     HostAddress = Context.GetFeature<IHttpConnectionFeature>().RemoteIpAddress.ToString(),
                     LocationRaw = query,
-                    Latitude = double.Parse(latitude, CultureInfo.InvariantCulture),
-                    Longitude = double.Parse(longitude, CultureInfo.InvariantCulture),
-                    Zoom = float.Parse(zoom, CultureInfo.InvariantCulture),
-                    Elevation = float.Parse(elevation, CultureInfo.InvariantCulture),
                 };
+
+                if (!string.IsNullOrWhiteSpace(query) && (string.IsNullOrWhiteSpace(lat) || string.IsNullOrWhiteSpace(lng)))
+                {
+                    using (HttpClient http = new HttpClient())
+                    {
+                        Stream response = await http.GetStreamAsync("http://maps.googleapis.com/maps/api/geocode/xml?address=" + Uri.EscapeDataString(query));
+                        XDocument xml = XDocument.Load(response);
+
+                        if (xml.Root.Element("status")?.Value == "OK")
+                        {
+                            XElement location = xml.Root.Element("result")?.Element("geometry")?.Element("location");
+
+                            lat = location?.Element("lat")?.Value;
+                            lng = location?.Element("lng")?.Value;
+                        }
+                    }
+                }
+
+                double value;
+                if (double.TryParse(lat, NumberStyles.Float, CultureInfo.InvariantCulture, out value)) note.Latitude = value;
+                if (double.TryParse(lng, NumberStyles.Float, CultureInfo.InvariantCulture, out value)) note.Longitude = value;
 
                 _context.Notez.Add(note);
                 await _context.SaveChangesAsync();
@@ -94,10 +113,10 @@ namespace HappyNotez.Controllers
                     await _context.SaveChangesAsync();
                 }
 
-                return RedirectToAction("Index", new { noteID = note.ID });
+                return RedirectToAction(nameof(Thanks), new { noteID = note.ID });
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
         }
     }
 }

@@ -253,20 +253,22 @@ function initMap()
                 if (markerData && markerData.count)
                 {
                     for (var i = 0; i < markerData.count; i++)
-                    {
-                        var latLng = new google.maps.LatLng(markerData.lats[i], markerData.longs[i]);
-                        var marker = new google.maps.Marker({ position: latLng, map: map });
-                        marker.noteID = markerData.ids[i];
-                        marker.found = markerData.founds[i];
+                        if (markerData.lats[i] && markerData.longs[i])
+                        {
 
-                        markers.push(marker);
+                            var latLng = new google.maps.LatLng(markerData.lats[i], markerData.longs[i]);
+                            var marker = new google.maps.Marker({ position: latLng, map: map });
+                            marker.noteID = markerData.ids[i];
+                            marker.found = markerData.founds[i];
 
-                        if (marker.noteID == openID)
-                            openMarker = marker;
+                            markers.push(marker);
 
-                        if (oms)
-                            oms.addMarker(marker);
-                    }
+                            if (marker.noteID == openID)
+                                openMarker = marker;
+
+                            if (oms)
+                                oms.addMarker(marker);
+                        }
                 }
 
                 if (typeof(MarkerClusterer) != "undefined")

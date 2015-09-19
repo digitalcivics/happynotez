@@ -15,7 +15,8 @@
     "Microsoft.Framework.Configuration.Json": "1.0.0-beta7",
     "Microsoft.Framework.Logging": "1.0.0-beta7",
     "Microsoft.Framework.Logging.Console": "1.0.0-beta7",
-    "Microsoft.Framework.Logging.Debug": "1.0.0-beta7"
+    "Microsoft.Framework.Logging.Debug": "1.0.0-beta7",
+    "System.Net.Http": "4.0.1-beta-23225"
   },
 
   "commands": {

@@ -40,8 +40,8 @@ namespace HappyNotez.Controllers
                 count = notez.Count,
                 ids = notez.Select(n => n.ID).ToArray(),
                 founds = notez.Select(n => (n.Timestamp.Year - 2015) * 32 * 12 + n.Timestamp.Month * 32 + n.Timestamp.Day).ToArray(),
-                lats = notez.Select(n => (float)n.Latitude).ToArray(),
-                longs = notez.Select(n => (float)n.Longitude).ToArray(),
+                lats = notez.Select(n => (float?)n.Latitude).ToArray(),
+                longs = notez.Select(n => (float?)n.Longitude).ToArray(),
             });
         }
 
