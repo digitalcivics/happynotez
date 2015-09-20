@@ -24,7 +24,7 @@
 @foreach (HappyNotez.Models.Notez note in Model)
 {
 	<p>On @note.Timestamp.ToString("ddd MMM d yyyy", System.Globalization.CultureInfo.InvariantCulture):</p>
-	<img src="/n/t(@note.ID).jpg" /><p>&nbsp;</p>
+	<img src="/n/t@(note.ID).jpg" /><p>&nbsp;</p>
 }
 
 	@if (Model.Length == ViewBag.PerPage)
