@@ -2,6 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<title>HappyNotez.org</title>
+	<meta name="viewport" content="width=device-width" />
 	<script>
 		var d = document;
 		function locate(){
@@ -18,8 +19,8 @@
 </head>
 <body id="b" style="font-family: sans-serif">
 	<script>
-		//if ((window.innerWidth || d.documentElement.clientWidth || d.getElementById("b").clientWidth) > 600)
-		//	window.location = "/home";
+		if ((window.innerWidth || d.documentElement.clientWidth || d.getElementById("b").clientWidth) > 600)
+			window.location = "/home";
 	</script>
 	<img src="/img/hn.gif" alt=":]" />
 	<h1>HappyNotez.org</h1>
