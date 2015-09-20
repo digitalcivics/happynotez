@@ -5,15 +5,45 @@
 	<meta name="viewport" content="width=device-width" />
 	<script>
 		var d = document;
-		function locate(){
-			navigator.geolocation.getCurrentPosition(function(p){
-				var a = d.getElementById("a"), o = d.getElementById("o"), t = d.getElementById("t");
-				if (loc){
-					a.value = p.coords.latitude;
-					o.value = p.coords.longitude;
-					t.value = a.value + " " + o.value;
-				}
-			});
+		var w = "please wait...";
+		function locate()
+		{
+			var t = d.getElementById("t");
+			if (t)
+			{
+				t.value = w;
+				navigator.geolocation.getCurrentPosition(
+					function (p)
+					{
+						var a = d.getElementById("a"), o = d.getElementById("o");
+						if (a && o)
+						{
+							a.value = p.coords.latitude;
+							o.value = p.coords.longitude;
+							t.value = a.value + " " + o.value;
+						}
+					},
+					function (r)
+					{
+						t.value = "";
+						alert(r);
+					});
+			}
+		}
+		function checkform()
+		{
+			if (d.getElementById("f").value == "")
+			{
+				alert("Didn't you forget to attach a picture of the note? ;-)");
+				return false;
+			}
+			var v = d.getElementById("t").value.trim();
+			if (v == "" || v == w)
+			{
+				alert("Please share where you found the note!");
+				return false;
+			}
+			return true;
 		}
 	</script>
 </head>
@@ -29,20 +59,20 @@
 	<h2>Have you found a note?</h2>
 	<p>Exciting! It would be great if you shared it to the archive of positive notes found around the world.</p>
 
-	<form method="post" enctype="multipart/form-data">
+	<form method="post" enctype="multipart/form-data" onsubmit="return checkform()">
 		<ol>
 			<li>Take a picture of the note and attach it:<br/>
-				<input name="photo" type="file" /><br/><br/>
+				<input type="file" id="f" name="photo" /><br/><br/>
 			</li>
 			<li>Where did you find it? Share <span id="l"></span>address, post code or just a city:<br/>
 				<input type="hidden" id="a" name="lat" /><input type="hidden" id="o" name="lng" />
-				<input id="t" name="query" type="text" /><br/><br/>
+				<input type="text" id="t" name="query" /><br/><br/>
 			</li>
 			<li><input type="submit" value="Submit!" /><br/></li>
 		</ol>
 		<script>
 			if (navigator && navigator.geolocation)
-				d.getElementById("l").innerHTML = "<a href='#' onclick='locate()'>your location</a> or type in an ";
+				d.getElementById("l").innerHTML = "<a href='javascript:locate()'>your location</a> or type in an ";
 		</script>
 	</form>
 
